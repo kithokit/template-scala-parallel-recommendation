@@ -26,16 +26,17 @@ class DataSource(val dsp: DataSourceParams)
     val eventsDb = Storage.getPEvents()
     val eventsRDD: RDD[Event] = eventsDb.find(
       appId = dsp.appId,
-      entityType = Some("user"),
-      eventNames = Some(List("rate", "buy")), // read "rate" and "buy" event
+      entityType = Some("user"), // MODIFIED
+      eventNames = Some(List("like", "dislike")), // MODIFIED
       // targetEntityType is optional field of an event.
-      targetEntityType = Some(Some("item")))(sc)
+      targetEntityType = Some(Some("girl")))(sc) // MODIFIED
+
 
     val ratingsRDD: RDD[Rating] = eventsRDD.map { event =>
       val rating = try {
         val ratingValue: Double = event.event match {
-          case "rate" => event.properties.get[Double]("rating")
-          case "buy" => 4.0 // map buy event to rating value of 4
+          case "like" => 4.0 // map a like event to a rating of 4.0
+          case "dislike" => 1.0 // map buy event to rating value of 4
           case _ => throw new Exception(s"Unexpected event ${event} is read.")
         }
         // entityId and targetEntityId is String
@@ -57,7 +58,7 @@ class DataSource(val dsp: DataSourceParams)
 
 case class Rating(
   user: String,
-  item: String,
+  girl: String,
   rating: Double
 )
 
