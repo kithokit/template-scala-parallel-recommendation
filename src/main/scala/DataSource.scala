@@ -29,7 +29,7 @@ class DataSource(val dsp: DataSourceParams)
       entityType = Some("user"), // MODIFIED
       eventNames = Some(List("like", "dislike")), // MODIFIED
       // targetEntityType is optional field of an event.
-      targetEntityType = Some(Some("girl")))(sc) // MODIFIED
+      targetEntityType = Some(Some("item")))(sc) // MODIFIED
 
 
     val ratingsRDD: RDD[Rating] = eventsRDD.map { event =>
@@ -58,7 +58,7 @@ class DataSource(val dsp: DataSourceParams)
 
 case class Rating(
   user: String,
-  girl: String,
+  item: String,
   rating: Double
 )
 
